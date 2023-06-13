@@ -1,0 +1,17 @@
+server:
+  port: 1002
+  servlet:
+    encoding:
+      enabled: true
+      charset: UTF-8
+      force: true
+logging:
+  level:
+    org:
+      zalando:
+        logbook: trace
+logbook:
+  filter:
+    form-request-mode: off
+  format:
+    style: http
