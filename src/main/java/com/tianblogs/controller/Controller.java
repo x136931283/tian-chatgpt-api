@@ -8,6 +8,7 @@ import com.plexpt.chatgpt.entity.chat.ChatCompletionResponse;
 import com.plexpt.chatgpt.entity.chat.Message;
 import com.tianblogs.dto.ResponseModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,10 @@ public class Controller {
             String userMessage = json.getString("userMessage");
             String systemMessage = json.getString("systemMessage");
             String key = json.getString("key");
+            String model = json.getString("model");
+            if (StringUtils.hasText(model)){
+                model = ChatCompletion.Model.GPT_3_5_TURBO.getName();
+            }
             if (!StringUtils.hasText(userMessage) || !StringUtils.hasText(key)) {
                 return ResponseModel.fail("message can not be blank");
             }
@@ -57,7 +62,7 @@ public class Controller {
             Message message = Message.of(userMessage);
             listMessage.add(message);
             ChatCompletion chatCompletion = ChatCompletion.builder()
-                    .model(ChatCompletion.Model.GPT_3_5_TURBO.getName())
+                    .model(model)
                     .messages(listMessage)
                     .maxTokens(3000)
                     .temperature(0.9)
